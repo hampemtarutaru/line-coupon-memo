@@ -53,5 +53,23 @@ window.CAMPAIGNS = [
     "entry": "LINEログイン・友だち追加・アンケート・コンビニ選択。20歳以上、当選まで1日1回。",
     "verifiedAt": "2026-10-08",
     "sourceType": "主催者公式"
+  },
+  {
+    "id": "otsuka-fibemini-20261006",
+    "title": "ファイブミニ 無料引換クーポン",
+    "sponsor": "大塚製薬",
+    "prize": "ファイブミニ 1本",
+    "winners": 103000,
+    "startAt": "2026-10-06T12:00:00+09:00",
+    "deadline": "2026-10-12T23:59:00+09:00",
+    "redeemUntil": "2026-10-19T23:59:00+09:00",
+    "officialUrl": "https://fibeminutes24h.belugacpn.jp/",
+    "category": "飲料",
+    "age20": false,
+    "membersOnly": false,
+    "requiresPurchase": false,
+    "entry": "大塚製薬公式LINEから抽選に応募。セブン‐イレブン・ファミリーマート・ローソンで利用できるクーポン（抽選時の指定店舗のみ有効）。",
+    "verifiedAt": "2026-10-09",
+    "sourceType": "主催者公式"
   }
 ];
