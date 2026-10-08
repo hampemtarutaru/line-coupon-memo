@@ -35,5 +35,23 @@ window.CAMPAIGNS = [
     "entry": "LINEログイン・初回アンケート・コンビニ選択・抽選。1日1回、当選まで。",
     "verifiedAt": "2026-10-08",
     "sourceType": "主催者公式"
+  },
+  {
+    "id": "asahi-drycrystal-20261007",
+    "title": "ドライクリスタル 無料引換クーポン",
+    "sponsor": "アサヒビール",
+    "prize": "アサヒスーパードライ ドライクリスタル 350ml缶 1本",
+    "winners": 405000,
+    "startAt": "2026-10-07T13:00:00+09:00",
+    "deadline": "2026-10-20T10:00:00+09:00",
+    "redeemUntil": "2026-10-27T23:59:00+09:00",
+    "officialUrl": "https://www.asahibeer-cp.jp/drycrystal/cp/261007-261020-7gsp024fo4/",
+    "category": "酒",
+    "age20": true,
+    "membersOnly": false,
+    "requiresPurchase": false,
+    "entry": "LINEログイン・友だち追加・アンケート・コンビニ選択。20歳以上、当選まで1日1回。",
+    "verifiedAt": "2026-10-08",
+    "sourceType": "主催者公式"
   }
 ];
