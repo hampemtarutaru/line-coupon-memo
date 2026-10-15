@@ -71,5 +71,23 @@ window.CAMPAIGNS = [
     "entry": "大塚製薬公式LINEから抽選に応募。セブン‐イレブン・ファミリーマート・ローソンで利用できるクーポン（抽選時の指定店舗のみ有効）。",
     "verifiedAt": "2026-10-09",
     "sourceType": "主催者公式"
+  },
+  {
+    "id": "asahi-zeitaku-premium-20261015",
+    "title": "贅沢搾りプレミアム 無料引換クーポン",
+    "sponsor": "アサヒビール",
+    "prize": "贅沢搾りプレミアム ぶどう または マスカット 350mL缶 1本",
+    "winners": 150000,
+    "startAt": "2026-10-15T00:00:00+09:00",
+    "deadline": "2026-10-28T10:00:00+09:00",
+    "redeemUntil": "2026-11-04T23:59:00+09:00",
+    "officialUrl": "https://www.asahibeer-cp.jp/brand/zeitaku_s/cp/261015-261028-ng389p863i/",
+    "category": "酒",
+    "age20": true,
+    "membersOnly": false,
+    "requiresPurchase": false,
+    "entry": "アサヒビールLINE公式アカウントを友だち追加し、アンケート回答・コンビニ選択。20歳以上、当選まで1日1回。ファミリーマートは10/27の一部時間帯に引換メンテナンスあり。",
+    "verifiedAt": "2026-10-16",
+    "sourceType": "主催者公式"
   }
 ];
