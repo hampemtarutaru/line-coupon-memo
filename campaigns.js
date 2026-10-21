@@ -89,5 +89,41 @@ window.CAMPAIGNS = [
     "entry": "アサヒビールLINE公式アカウントを友だち追加し、アンケート回答・コンビニ選択。20歳以上、当選まで1日1回。ファミリーマートは10/27の一部時間帯に引換メンテナンスあり。",
     "verifiedAt": "2026-10-16",
     "sourceType": "主催者公式"
+  },
+  {
+    "id": "suntory-the-dry-20261020",
+    "title": "THE DRY 350ml缶 無料引換クーポン",
+    "sponsor": "サントリー",
+    "prize": "THE DRY〈グリーンレモン〉または〈グレープフルーツ〉ALC.7% 350ml缶 いずれか1本",
+    "winners": 375000,
+    "startAt": "2026-10-20T09:00:00+09:00",
+    "deadline": "2026-11-02T23:59:00+09:00",
+    "redeemUntil": "2026-11-09T23:59:00+09:00",
+    "officialUrl": "https://modcp.suntory.co.jp/K2610TDY1/top/",
+    "category": "酒",
+    "age20": true,
+    "membersOnly": false,
+    "requiresPurchase": false,
+    "entry": "LINEログイン・おとなサントリーLINE公式アカウント認証／友だち追加・アンケート回答。国内在住20歳以上。期間中、当選するまで1日1回。指定コンビニで引換（セブン‐イレブンのみ10/21 9:00開始）。",
+    "verifiedAt": "2026-10-21",
+    "sourceType": "主催者公式（創業者提示の応募要項・実機スクリーンショット）"
+  },
+  {
+    "id": "suntory-kakuhai-yuudoki-20261020",
+    "title": "角ハイボール〈夕どき〉 350ml缶 無料引換クーポン",
+    "sponsor": "サントリー",
+    "prize": "角ハイボール〈夕どき〉 350ml缶 1本",
+    "winners": 200000,
+    "startAt": "2026-10-20T09:00:00+09:00",
+    "deadline": "2026-11-04T23:59:00+09:00",
+    "redeemUntil": "2026-11-09T23:59:00+09:00",
+    "officialUrl": "https://modcp.suntory.co.jp/Y2610KAK1/top/",
+    "category": "酒",
+    "age20": true,
+    "membersOnly": false,
+    "requiresPurchase": false,
+    "entry": "LINEログイン・初回アンケートで抽選。期間中1アカウントにつき1日1回（当選は1回限り）。当選時に指定されたコンビニのみで引換え、当選後の店舗変更不可。",
+    "verifiedAt": "2026-10-21",
+    "sourceType": "主催者公式（創業者提供の応募要項・実機スクリーンショット）"
   }
 ];
