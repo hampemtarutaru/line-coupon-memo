@@ -68,7 +68,8 @@
       const actions = e("div", "actions");
       const link = e("a", "apply", "公式ページを見る ↗");
       link.href = c.officialUrl; link.target = "_blank"; link.rel="noopener noreferrer";
-      if(history?.pending) link.textContent = "当選内容・クーポンを確認 ↗";
+      // The official campaign URL is not the user-specific winning coupon URL.
+      if(history?.pending) link.title = "当選した引換券の表示先とは限りません。実際のクーポンは応募時に案内された画面をご確認ください。";
       const label = e("label", "done");
       const box = document.createElement("input"); box.type="checkbox"; box.checked=getDone(c.id); box.setAttribute("aria-label", `${c.title}に今日応募済み`);
       box.addEventListener("change", () => {setDone(c.id, box.checked); draw();});
