@@ -164,10 +164,28 @@
   function exportJSON() {
     download(`K080_復元用_${dateJST()}.json`, JSON.stringify(store,null,2), 'application/json;charset=utf-8');
   }
+  // An expired campaign still accepts real past attempts, but never a date outside
+  // its entry window. Dates are compared as JST calendar days (not clock times).
+  function attemptDateBounds(c) {
+    if (!c) return {earliest:'', latest:'', available:false};
+    const toDay = timestamp => {
+      const ms = Date.parse(timestamp || '');
+      return Number.isFinite(ms) ? dateJST(new Date(ms)) : '';
+    };
+    const earliest = toDay(c.startAt);
+    const deadline = toDay(c.deadline);
+    const today = dateJST();
+    const latest = deadline && deadline < today ? deadline : today;
+    return {earliest, latest, available:!!deadline && (!earliest || earliest <= latest)};
+  }
   function addAttempt(id, date) {
-    if (!writable || !isDate(date)) return;
+    if (!writable) return;
+    const bounds = attemptDateBounds(store.campaigns[id]);
+    if (!isDate(date) || !bounds.available || (bounds.earliest && date < bounds.earliest) || date > bounds.latest) {
+      alert('応募期間外の日付は記録できません。実際に応募した日を確認してください。');
+      return;
+    }
     if (attemptsFor(id).some(a => a.result === 'win' && a.appliedOn <= date)) { alert('当選後の応募は記録できません。過去の応募を追記する場合は当選日より前の日付を指定してください。'); return; }
-    if (date > dateJST()) { alert('未来の日付は記録できません。'); return; }
     if (attemptsFor(id).some(a => a.appliedOn === date) && !confirm('この案件には同じ日の応募記録があります。別の応募としてもう1件追加しますか？')) return;
     const a = {id:'a_' + (crypto.randomUUID ? crypto.randomUUID().replace(/-/g,'') : (Date.now().toString(36)+Math.random().toString(36).slice(2))), campaignId:id,
       appliedOn:date, result:'unknown', checkedOn:null, redemption:null, redeemedOn:null, note:''};
@@ -237,10 +255,16 @@
       body.append(el('a',{href:c.officialUrl,target:'_blank',rel:'noopener noreferrer',className:'k080-official'},'公式ページを開く ↗'));
     }
     const row = el('div',{className:'k080-add'});
-    const day = el('input',{type:'date',value:dateJST(),max:dateJST(),'aria-label':`${c.title} 応募完了日`});day.disabled = !writable;
+    const bounds = attemptDateBounds(c);
+    const day = el('input',{type:'date',value:bounds.available ? bounds.latest : '',
+      min:bounds.earliest,max:bounds.latest,'aria-label':`${c.title} 応募完了日`});
+    day.disabled = !writable || !bounds.available;
     const add = el('button',{type:'button'},'応募完了を1回記録');
     const winnerDates = wins.map(a=>a.appliedOn).sort();
-    const refreshAddDisabled = () => { add.disabled = !writable || (winnerDates.length > 0 && day.value >= winnerDates[0]); };
+    const refreshAddDisabled = () => { add.disabled = !writable || !bounds.available || !isDate(day.value) ||
+      (bounds.earliest && day.value < bounds.earliest) || day.value > bounds.latest ||
+      (winnerDates.length > 0 && day.value >= winnerDates[0]); };
+    day.addEventListener('input',refreshAddDisabled);
     day.addEventListener('change',refreshAddDisabled); refreshAddDisabled();
     add.addEventListener('click',()=>addAttempt(c.id,day.value));
     row.append(el('label',{},'応募完了日 ',day),add);
