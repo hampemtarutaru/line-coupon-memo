@@ -13,8 +13,10 @@
     const p = Object.fromEntries(dayParts.formatToParts(new Date()).filter(x => x.type !== "literal").map(x => [x.type, x.value]));
     return `${p.year}-${p.month}-${p.day}`;
   };
-  const todayLabel = dayFormatter.format(new Date());
-  document.getElementById("today").textContent = `きょう ${todayLabel}`;
+  // Keep the visible date and daily checkboxes correct when a tab stays open overnight.
+  const todayNode = document.getElementById("today");
+  let displayedDay = TODAY();
+  todayNode.textContent = `きょう ${dayFormatter.format(new Date())}`;
   const checkKey = id => `line-coupon-memo:done:${TODAY()}:${id}`;
   const getDone = id => { try { return localStorage.getItem(checkKey(id)) === "1"; } catch { return false; } };
   const setDone = (id, done) => { try { done ? localStorage.setItem(checkKey(id), "1") : localStorage.removeItem(checkKey(id)); } catch { /* Private browsing may block storage. */ } };
@@ -86,6 +88,44 @@
   filter.addEventListener("change", draw);
   document.addEventListener('k080:history-ready', draw);
   document.addEventListener('k080:history-changed', draw);
-  document.addEventListener('visibilitychange', () => { if(!document.hidden) draw(); });
-  draw();
+
+  // The page may stay open over a JST day change or an in-day campaign deadline.
+  // Refresh only when the date or an entry/redemption availability state changes,
+  // so a person using the page does not lose focus to a needless rerender.
+  let lastClockState = '';
+  function clockState() {
+    return TODAY() + '|' + campaigns.filter(permitted).map(c => {
+      const h = historyFor(c.id);
+      return [c.id, future(c) ? 1 : 0, h?.pending ? 1 : 0, h?.hideFromActive ? 1 : 0].join(':');
+    }).join('|');
+  }
+  function refreshForClock() {
+    const day = TODAY();
+    const dayChanged = day !== displayedDay;
+    if (dayChanged) {
+      displayedDay = day;
+      todayNode.textContent = `きょう ${dayFormatter.format(new Date())}`;
+    }
+    if (dayChanged || clockState() !== lastClockState) {
+      // The history panel's date bounds and redemption labels also need refresh.
+      if (dayChanged && window.K080History?.refresh) window.K080History.refresh();
+      else draw();
+    }
+  }
+  const originalDraw = draw;
+  // Track the state after every regular draw, including checkbox/history events.
+  const drawWithClockState = () => { originalDraw(); lastClockState = clockState(); };
+  filter.removeEventListener("change", draw);
+  filter.addEventListener("change", drawWithClockState);
+  document.removeEventListener('k080:history-ready', draw);
+  document.removeEventListener('k080:history-changed', draw);
+  document.addEventListener('k080:history-ready', drawWithClockState);
+  document.addEventListener('k080:history-changed', drawWithClockState);
+  // Main campaign checkboxes use draw() directly; refreshForClock will detect no
+  // time-related change because the state key excludes the daily checkbox status.
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshForClock(); });
+  window.addEventListener('pageshow', refreshForClock);
+  window.addEventListener('focus', refreshForClock);
+  setInterval(refreshForClock, 60 * 1000);
+  drawWithClockState();
 })();
