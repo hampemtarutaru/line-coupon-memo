@@ -26,6 +26,13 @@
   const fmtNum = n => Number(n).toLocaleString("ja-JP");
   // The history module is optional. The existing daily checkbox works without it.
   const historyFor = id => window.K080History?.summaryFor?.(id) || null;
+  let lastClockState = '';
+  function clockState() {
+    return TODAY() + '|' + campaigns.filter(permitted).map(c => {
+      const h = historyFor(c.id);
+      return [c.id, future(c) ? 1 : 0, h?.pending ? 1 : 0, h?.hideFromActive ? 1 : 0].join(':');
+    }).join('|');
+  }
   function draw() {
     list.replaceChildren();
     const valid = campaigns.filter(permitted)
@@ -82,6 +89,7 @@
       }
       actions.append(link,label);card.append(details,actions);list.append(card);
     }
+    lastClockState = clockState();
   }
   const dates = campaigns.map(c=>c.verifiedAt).filter(Boolean).sort();
   document.getElementById("updated").textContent = dates.length ? `掲載情報の最終確認：${dates[dates.length-1]}` : "掲載情報の確認日：未確認";
@@ -90,15 +98,7 @@
   document.addEventListener('k080:history-changed', draw);
 
   // The page may stay open over a JST day change or an in-day campaign deadline.
-  // Refresh only when the date or an entry/redemption availability state changes,
-  // so a person using the page does not lose focus to a needless rerender.
-  let lastClockState = '';
-  function clockState() {
-    return TODAY() + '|' + campaigns.filter(permitted).map(c => {
-      const h = historyFor(c.id);
-      return [c.id, future(c) ? 1 : 0, h?.pending ? 1 : 0, h?.hideFromActive ? 1 : 0].join(':');
-    }).join('|');
-  }
+  // Refresh only when the date or entry/redemption status actually changes.
   function refreshForClock() {
     const day = TODAY();
     const dayChanged = day !== displayedDay;
@@ -112,20 +112,9 @@
       else draw();
     }
   }
-  const originalDraw = draw;
-  // Track the state after every regular draw, including checkbox/history events.
-  const drawWithClockState = () => { originalDraw(); lastClockState = clockState(); };
-  filter.removeEventListener("change", draw);
-  filter.addEventListener("change", drawWithClockState);
-  document.removeEventListener('k080:history-ready', draw);
-  document.removeEventListener('k080:history-changed', draw);
-  document.addEventListener('k080:history-ready', drawWithClockState);
-  document.addEventListener('k080:history-changed', drawWithClockState);
-  // Main campaign checkboxes use draw() directly; refreshForClock will detect no
-  // time-related change because the state key excludes the daily checkbox status.
   document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshForClock(); });
   window.addEventListener('pageshow', refreshForClock);
   window.addEventListener('focus', refreshForClock);
   setInterval(refreshForClock, 60 * 1000);
-  drawWithClockState();
+  draw();
 })();
