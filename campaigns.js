@@ -125,5 +125,41 @@ window.CAMPAIGNS = [
     "entry": "LINEログイン・初回アンケートで抽選。期間中1アカウントにつき1日1回（当選は1回限り）。当選時に指定されたコンビニのみで引換え、当選後の店舗変更不可。",
     "verifiedAt": "2026-10-21",
     "sourceType": "主催者公式（創業者提供の応募要項・実機スクリーンショット）"
+  },
+  {
+    "id": "suntory-allfree-20261027",
+    "title": "オールフリー 無料引換クーポン",
+    "sponsor": "サントリー",
+    "prize": "オールフリー 350ml缶 1本",
+    "winners": 150000,
+    "startAt": "2026-10-27T09:00:00+09:00",
+    "deadline": "2026-11-09T23:59:00+09:00",
+    "redeemUntil": "2026-11-16T23:59:00+09:00",
+    "officialUrl": "https://modcp.suntory.co.jp/B2610ALF1/top/",
+    "category": "ノンアルコール",
+    "age20": true,
+    "membersOnly": false,
+    "requiresPurchase": false,
+    "entry": "おとなサントリーLINE公式アカウントを認証・友だち追加し、アンケート回答・引換希望のコンビニを選択して抽選。国内在住20歳以上。期間中、当選するまで1日1回。",
+    "verifiedAt": "2026-10-28",
+    "sourceType": "サントリー応募ページ（創業者の実機到達確認）／募集要項は2026/10/27公開情報との照合"
+  },
+  {
+    "id": "asahi-clearasahi-nama-20261028",
+    "title": "クリアアサヒ〈生〉 無料引換クーポン",
+    "sponsor": "アサヒビール",
+    "prize": "クリアアサヒ〈生〉 350ml缶 1本",
+    "winners": 400000,
+    "startAt": "2026-10-28T13:00:00+09:00",
+    "deadline": "2026-11-10T23:59:00+09:00",
+    "redeemUntil": "2026-11-17T23:59:00+09:00",
+    "officialUrl": "https://newclearasahi202610-campaign.belugacpn.jp/",
+    "category": "酒",
+    "age20": true,
+    "membersOnly": false,
+    "requiresPurchase": false,
+    "entry": "LINEからアンケート回答で抽選。期間中、当選するまで1日1回。LINE枠40万名（X枠10万名と合わせて計50万名）。当選時はセブン‐イレブン、ファミリーマート、ローソン、ミニストップで無料引換。",
+    "verifiedAt": "2026-10-28",
+    "sourceType": "アサヒビール公式ニュース／創業者提供の主催者応募規約・一般向け応募URL"
   }
 ];
