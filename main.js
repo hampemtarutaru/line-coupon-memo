@@ -21,7 +21,11 @@
   const getDone = id => { try { return localStorage.getItem(checkKey(id)) === "1"; } catch { return false; } };
   const setDone = (id, done) => { try { done ? localStorage.setItem(checkKey(id), "1") : localStorage.removeItem(checkKey(id)); } catch { /* Private browsing may block storage. */ } };
   const e = (tag, className, content) => { const node = document.createElement(tag); if(className) node.className = className; if(content !== undefined) node.textContent = content; return node; };
-  const future = c => Number.isFinite(Date.parse(c.deadline)) && Date.parse(c.deadline) >= Date.now();
+  // Campaign deadlines are published to the minute (e.g. 23:59 means through 23:59:59).
+  const future = c => {
+    const end = Date.parse(c.deadline);
+    return Number.isFinite(end) && Date.now() < end + 60 * 1000;
+  };
   const permitted = c => c.requiresPurchase === false && Number(c.winners) >= 10000 && /^https:\/\//.test(c.officialUrl || "") && c.deadline;
   const fmtNum = n => Number(n).toLocaleString("ja-JP");
   // The history module is optional. The existing daily checkbox works without it.
