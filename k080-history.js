@@ -110,14 +110,19 @@
   }
   const opt = (value, label) => el('option', {value, textContent: label});
   const todayTime = time => time ? Date.parse(time) : NaN;
+  // Published close times are minute-granular; the end of 23:59 is 00:00.
+  const minuteEnd = time => {
+    const t = todayTime(time);
+    return Number.isFinite(t) ? t + 60 * 1000 : NaN;
+  };
   function phase(c) {
-    const now = Date.now(), start = todayTime(c.startAt), end = todayTime(c.deadline);
+    const now = Date.now(), start = todayTime(c.startAt), end = minuteEnd(c.deadline);
     if (!Number.isNaN(start) && now < start) return '準備中';
-    return !Number.isNaN(end) && now > end ? '応募終了' : '応募受付中';
+    return !Number.isNaN(end) && now >= end ? '応募終了' : '応募受付中';
   }
   function effectiveRedemption(a, c) {
     if (a.result !== 'win') return null;
-    if (a.redemption === 'pending' && c.redeemUntil && Date.now() > todayTime(c.redeemUntil)) return '期限切れ（未引換）';
+    if (a.redemption === 'pending' && c.redeemUntil && Date.now() >= minuteEnd(c.redeemUntil)) return '期限切れ（未引換）';
     return ({pending:'引換待ち',done:'引換済み',expired:'期限切れ'})[a.redemption] || '未確認';
   }
   function attemptsFor(id) { return store.attempts.filter(a => a.campaignId === id).sort((a,b) => b.appliedOn.localeCompare(a.appliedOn) || b.id.localeCompare(a.id)); }
