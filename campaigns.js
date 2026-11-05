@@ -161,5 +161,23 @@ window.CAMPAIGNS = [
     "entry": "LINEからアンケート回答で抽選。期間中、当選するまで1日1回。LINE枠40万名（X枠10万名と合わせて計50万名）。当選時はセブン‐イレブン、ファミリーマート、ローソン、ミニストップで無料引換。",
     "verifiedAt": "2026-10-28",
     "sourceType": "アサヒビール公式ニュース／創業者提供の主催者応募規約・一般向け応募URL"
+  },
+  {
+    "id": "kirin-honkirin-20261104",
+    "title": "本麒麟 350ml缶 無料引換クーポン",
+    "sponsor": "キリンビール",
+    "prize": "本麒麟 350ml缶 1本",
+    "winners": 295000,
+    "startAt": "2026-11-04T11:00:00+09:00",
+    "deadline": "2026-11-10T23:59:00+09:00",
+    "redeemUntil": "2026-11-17T23:59:00+09:00",
+    "officialUrl": "https://cp.kirin.jp/join/38608",
+    "category": "酒",
+    "age20": true,
+    "membersOnly": false,
+    "requiresPurchase": false,
+    "entry": "LINEアプリをインストールしたスマホからコンビニ選択・LINEログイン・動画視聴・アンケート回答で抽選。1日1回、当選まで。セブン‐イレブンは11/5 11:00から。",
+    "verifiedAt": "2026-11-05",
+    "sourceType": "主催者公式"
   }
 ];
