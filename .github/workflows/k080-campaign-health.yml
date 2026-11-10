@@ -1,0 +1,22 @@
+name: K-080 campaign inventory health (read-only)
+on:
+  pull_request:
+    paths:
+      - 'campaigns.js'
+      - 'scripts/k080_campaign_health*.mjs'
+      - '.github/workflows/k080-campaign-health.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify inventory, source URLs and JST deadline boundaries
+        run: node --test scripts/k080_campaign_health.test.mjs
+      - name: Print current inventory review report
+        run: node scripts/k080_campaign_health.mjs
