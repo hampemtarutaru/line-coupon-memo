@@ -21,3 +21,17 @@ h1{font-size:clamp(29px,4vw,40px);letter-spacing:-.035em;line-height:1.4;margin:
 .footer{border-top:1px solid var(--line);padding:19px 0 38px;display:flex;justify-content:space-between;gap:10px;font-size:11px;color:#7b8a80}
 @media(max-width:650px){.page{padding:0 15px}.site-head{padding:17px 0}.site-label{display:none}.intro{padding:38px 4px 27px}.lead{font-size:14px}.content{padding:20px 14px 17px;border-radius:15px}.section-bar{align-items:flex-start;flex-direction:column;gap:9px}.campaign{grid-template-columns:1fr;padding:17px 15px}.campaign h3{font-size:16px}.actions{flex-direction:row;justify-content:space-between;align-items:center}.apply{font-size:12px;padding:9px 13px}.facts{gap:6px 13px}.about{padding:30px 4px 35px}.footer{display:block}.footer span+span:before{content:" / "}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+
+/* K-093: hamuresu lives in the header without covering controls */
+.site-mascot-k093{display:flex;align-items:center;gap:9px;flex:none;padding:3px 5px 3px 12px;border-radius:999px;background:#fff9ea;border:1px solid #efe8d5}
+.site-mascot-k093 img{display:block;width:56px;height:56px;object-fit:contain}
+@media(max-width:650px){.site-mascot-k093{padding:2px 3px 2px 3px}.site-mascot-k093 img{width:48px;height:48px}}
+
+
+/* K-093: keep long coupon action labels usable on narrow (320px) screens. */
+@media(max-width:650px){
+  .campaign-list{grid-template-columns:minmax(0,1fr)}
+  .campaign{grid-template-columns:minmax(0,1fr);min-width:0}
+  .actions{flex-wrap:wrap;gap:8px}
+}
