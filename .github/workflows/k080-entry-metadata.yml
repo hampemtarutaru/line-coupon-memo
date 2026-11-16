@@ -1,0 +1,19 @@
+name: K-080 landing page metadata check
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'sitemap.xml'
+      - 'scripts/k080_entry_metadata.test.mjs'
+      - '.github/workflows/k080-entry-metadata.yml'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test scripts/k080_entry_metadata.test.mjs
