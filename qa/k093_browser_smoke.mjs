@@ -23,6 +23,10 @@ try {
     assert.ok(ham.x>=logo.x+logo.width-1,'Mascot overlaps site brand at '+width);
     assert.ok(ham.x+ham.width<=width+1,'Mascot overflows header at '+width);
     const dimensions=await page.evaluate(()=>({client:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth}));
+    if(dimensions.scroll>dimensions.client+1) {
+      const offenders=await page.evaluate(()=>[...document.querySelectorAll('body *')].map(el=>{const r=el.getBoundingClientRect();return {tag:el.tagName,cls:el.className,scroll:el.scrollWidth,client:el.clientWidth,left:Math.round(r.left),right:Math.round(r.right),width:Math.round(r.width)};}).filter(o=>o.right>document.documentElement.clientWidth+1 || o.left< -1).slice(0,25));
+      console.error('Overflow diagnostic',width,JSON.stringify(offenders));
+    }
     assert.ok(dimensions.scroll<=dimensions.client+1,'Page overflows at '+width+': '+JSON.stringify(dimensions));
     assert.equal(await page.locator('#search').count(),0);
     assert.equal(await page.locator('#campaign-list').count(),1);
