@@ -39,6 +39,45 @@ try {
     const history=page.locator('details.k080-root');
     assert.equal(await history.count(),1,'History panel missing at '+width);
     await page.screenshot({path:'qa-results/k093-hamuresu-'+width+'.png',fullPage:false});
+    // Isolated synthetic history only. No real user storage is touched.
+    assert.equal(await page.locator('.k080-loss-mascot img').count(),0);
+    await page.evaluate(()=>{
+      const key=window.K080History.storageKey;
+      const data=JSON.parse(localStorage.getItem(key));
+      const id=Object.keys(data.campaigns)[0];
+      const date='2026-10-10';
+      data.attempts=[
+        {id:'qa_a',campaignId:id,appliedOn:date,result:'lose',checkedOn:date,redemption:null,redeemedOn:null,note:''},
+        {id:'qa_b',campaignId:id,appliedOn:date,result:'lose',checkedOn:date,redemption:null,redeemedOn:null,note:''},
+        {id:'qa_c',campaignId:id,appliedOn:date,result:'unknown',checkedOn:null,redemption:null,redeemedOn:null,note:''},
+        {id:'qa_d',campaignId:id,appliedOn:date,result:'win',checkedOn:date,redemption:'done',redeemedOn:date,note:''}
+      ];
+      localStorage.setItem(key,JSON.stringify(data));
+    });
+    await page.reload({waitUntil:'networkidle'});
+    const image=page.locator('.k080-loss-mascot img');
+    assert.equal(await image.count(),1,'One mascot per campaign');
+    const card=page.locator('.k080-campaign').filter({has:image});
+    await page.locator('details.k080-root > summary').click();
+    await card.locator('summary').click();
+    await image.scrollIntoViewIfNeeded();
+    await image.evaluate(img=>img.decode());
+    assert.ok(await image.evaluate(img=>img.complete && img.naturalWidth===180));
+    const box=await image.boundingBox();
+    assert.ok(box && box.width<=120.5 && box.x>=0 && box.x+box.width<=width+1);
+    assert.equal(await image.locator('xpath=../..').locator('select').first().inputValue(),'lose');
+    await page.screenshot({path:'qa-results/k080-loss-'+width+'.png',fullPage:false});
+    // Changing the shown loss must move the image to the remaining loss;
+    // changing both to unknown removes it, then recording a loss restores it.
+    await image.locator('xpath=../..').locator('select').first().selectOption('unknown');
+    assert.equal(await image.count(),1);
+    await image.locator('xpath=../..').locator('select').first().selectOption('unknown');
+    assert.equal(await image.count(),0);
+    // The first row is a win, so use an unknown row instead.
+    const unknown=page.locator('.k080-campaign[open] .k080-attempt select').filter({has:page.locator('option[value="unknown"]')});
+    await unknown.nth(1).selectOption('lose');
+    assert.equal(await image.count(),1);
+    assert.equal(await image.locator('xpath=../..').locator('select').first().inputValue(),'lose');
     await ctx.close();
   }
   assert.deepEqual(errors,[],'Uncaught browser errors');
