@@ -211,7 +211,7 @@
     if (a.result !== 'win') return;
     updateAttempt(a.id, {redemption:choice, redeemedOn:choice === 'done' ? (a.redeemedOn || dateJST()) : null});
   }
-  function attemptRow(a, c) {
+  function attemptRow(a, c, showLossMascot = false) {
     const wrap = el('div',{className:'k080-attempt'});
     wrap.append(el('div',{className:'k080-attempt-date'},`応募日 ${a.appliedOn}`));
     const result = el('select',{'aria-label':`${c.title} ${a.appliedOn} 抽選結果`}, opt('unknown','未確認'),opt('lose','落選'),opt('win','当選'));
@@ -230,6 +230,9 @@
         date.addEventListener('change',()=> { if (isDate(date.value) && date.value <= dateJST()) updateAttempt(a.id,{redeemedOn:date.value}); else {alert('日付を確認してください'); render(a.campaignId);} });
         wrap.append(el('label',{},'引換日 ',date));
       }
+    }
+    if (showLossMascot && a.result === 'lose') {
+      wrap.append(el('div',{className:'k080-loss-mascot'},el('img',{src:'assets/hamuresu-loss.webp',width:180,height:180,alt:'',loading:'lazy',decoding:'async'})));
     }
     const note = el('input',{type:'text',maxlength:'300',value:a.note || '',placeholder:'メモ（任意・個人情報は入力しない）','aria-label':'応募メモ'});
     note.disabled = !writable;
@@ -274,7 +277,7 @@
     add.addEventListener('click',()=>addAttempt(c.id,day.value));
     row.append(el('label',{},'応募完了日 ',day),add);
     body.append(row,el('p',{className:'k080-muted'},'実際に応募を完了した場合だけ記録。公式応募ボタンを押しただけでは記録されません。'));
-    if (at.length) {body.append(el('h4',{},'応募ごとの記録'));at.forEach(a=>body.append(attemptRow(a,c)));}
+    if (at.length) {body.append(el('h4',{},'応募ごとの記録'));at.forEach(a=>body.append(attemptRow(a,c,a.id === loses[0]?.id)));}
     else body.append(el('p',{className:'k080-empty'},'まだ応募履歴はありません。'));
     dt.append(body);return dt;
   }
@@ -350,6 +353,8 @@
 #k080-history .k080-add,#k080-history .k080-attempt-fields{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
 #k080-history label{font-size:.84rem}#k080-history .k080-add{margin:8px 0}
 #k080-history .k080-attempt{border-top:1px solid #e8eaf0;padding:12px 0}
+#k080-history .k080-loss-mascot{display:flex;justify-content:flex-end;margin:4px 0}
+#k080-history .k080-loss-mascot img{display:block;width:120px;max-width:100%;height:auto}
 #k080-history .k080-attempt-date{font-weight:700;font-size:.9rem;margin-bottom:6px}
 #k080-history .k080-note{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;align-items:center}
 #k080-history .k080-note input{flex:1;min-width:150px}
